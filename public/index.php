@@ -1,4 +1,4 @@
-```<?php
+<?php
 
 // Autoload dependencies
 require __DIR__ . '/../vendor/autoload.php';
@@ -20,4 +20,3 @@ $response = $kernel->handle($request);
 $response->send();
 
 $kernel->terminate($request, $response);
-```
