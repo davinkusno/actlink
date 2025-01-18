@@ -9,7 +9,7 @@
   "builds": [
     {
       "src": "public/index.php",
-      "use": "@vercel/php"
+      "use": "@vercel/static-build"
     }
   ],
   "installCommand": "composer install --ignore-platform-reqs",
