@@ -49,8 +49,15 @@ if (!is_dir('/tmp/sessions')) {
 }
 
 // Explicitly set the configuration for cache path in cache store
-config(['cache.stores.file.path' => '/tmp/cache']);
-config(['session.files' => '/tmp/sessions']); // For session storage
-config(['filesystems.disks.local.root' => '/tmp/storage']); // Local disk root path for filesystem
+$app->singleton('config', function ($app) {
+    return $app->make('config');
+});
+
+// Set configuration at runtime
+$app->booting(function () use ($app) {
+    $app['config']->set('cache.stores.file.path', '/tmp/cache');
+    $app['config']->set('session.files', '/tmp/sessions'); // For session storage
+    $app['config']->set('filesystems.disks.local.root', '/tmp/storage'); // Local disk root path for filesystem
+});
 
 return $app;
