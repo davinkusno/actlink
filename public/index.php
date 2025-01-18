@@ -1,17 +1,23 @@
-<?php
+```<?php
 
-use Illuminate\Http\Request;
+// Autoload dependencies
+require __DIR__ . '/../vendor/autoload.php';
 
-define('LARAVEL_START', microtime(true));
-
-// Determine if the application is in maintenance mode...
-if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
-    require $maintenance;
+// Load environment variables if not already loaded
+if (file_exists(__DIR__ . '/../.env')) {
+    Dotenv\Dotenv::createImmutable(__DIR__ . '/../')->safeLoad();
 }
 
-// Register the Composer autoloader...
-require __DIR__.'/../vendor/autoload.php';
+// Bootstrap Laravel
+$app = require __DIR__ . '/../bootstrap/app.php';
 
-// Bootstrap Laravel and handle the request...
-(require_once __DIR__.'/../bootstrap/app.php')
-    ->handleRequest(Request::capture());
+// Handle the request
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+
+$request = Illuminate\Http\Request::capture();
+$response = $kernel->handle($request);
+
+$response->send();
+
+$kernel->terminate($request, $response);
+```
