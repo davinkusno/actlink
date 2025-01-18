@@ -22,9 +22,14 @@ $app = Application::configure(basePath: dirname(__DIR__))
     })
     ->create();
 
-// Dynamically override the cache path to use /tmp for writable access
+// Dynamically override the cache path
 $app->bind('path.cache', function () {
     return '/tmp';
 });
+
+// Ensure cache path is writable and exists
+if (!is_dir('/tmp')) {
+    mkdir('/tmp', 0777, true);
+}
 
 return $app;
