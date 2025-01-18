@@ -3,20 +3,15 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/public/index.php"
+      "dest": "public/index.php"
     }
   ],
   "builds": [
     {
-      "src": "api/*.php",
-      "use": "@vercel/php"
-    },
-    {
       "src": "public/index.php",
-      "use": "@vercel/php"
+      "use": "vercel-php"
     }
   ],
-  "installCommand": "composer install --ignore-platform-reqs",
   "env": {
     "APP_STORAGE": "/tmp",
     "SESSION_DRIVER": "file",
