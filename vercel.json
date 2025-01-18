@@ -11,8 +11,5 @@
       "src": "public/index.php",
       "use": "@vercel/php"
     }
-  ],
-  "hooks": {
-    "build": "php artisan config:cache && php artisan cache:clear"
-  }
+  ]
 }

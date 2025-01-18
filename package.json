@@ -2,6 +2,7 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "prebuild": "php artisan config:cache && php artisan cache:clear",
         "build": "vite build",
         "dev": "vite"
     },
