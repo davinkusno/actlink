@@ -60,7 +60,7 @@ return [
     |
     */
 
-    'files' => storage_path('tmp/sessions'),
+    'files' => storage_path('/tmp/sessions'),
 
     /*
     |--------------------------------------------------------------------------
