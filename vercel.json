@@ -5,6 +5,13 @@
     ],
     "builds": [
       { "src": "public/index.php", "use": "vercel-php" }
-    ]
+    ],
+    "scripts": {
+      "postInstall": [
+        "php artisan config:cache",
+        "php artisan route:cache",
+        "php artisan view:cache"
+      ]
+    }
   }
   
