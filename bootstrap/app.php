@@ -19,4 +19,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->create()
+    ->useCachePath(env('APP_CACHE_PATH', base_path('bootstrap/cache')));
