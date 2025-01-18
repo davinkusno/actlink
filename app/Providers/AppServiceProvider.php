@@ -22,12 +22,20 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (app()->environment('production')) {
-            $cachePath = '/tmp/cache';
-            if (!File::exists($cachePath)) {
-                File::makeDirectory($cachePath, 0755, true);
+            $tmpCachePath = '/tmp/cache';
+            $tmpSessionsPath = '/tmp/sessions';
+    
+            if (!File::exists($tmpCachePath)) {
+                File::makeDirectory($tmpCachePath, 0755, true);
             }
+    
+            if (!File::exists($tmpSessionsPath)) {
+                File::makeDirectory($tmpSessionsPath, 0755, true);
+            }
+    
 
-            config(['cache.stores.file.path' => $cachePath]);
+            config(['cache.stores.file.path' => $tmpCachePath]);
+            config(['session.files' => $tmpSessionsPath]);
         }
 
         Paginator::useBootstrap();
