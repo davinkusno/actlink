@@ -32,4 +32,7 @@ if (!is_dir('/tmp')) {
     mkdir('/tmp', 0777, true);
 }
 
+// Dynamically override the storage path
+$app->useStoragePath(env('APP_STORAGE', '/tmp'));
+
 return $app;

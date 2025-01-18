@@ -1,17 +1,24 @@
 {
-    "version": 2,
-    "routes": [
-      { "src": "/(.*)", "dest": "public/index.php" }
-    ],
-    "builds": [
-      { "src": "public/index.php", "use": "vercel-php" }
-    ],
-    "scripts": {
-      "postInstall": [
-        "php artisan config:cache",
-        "php artisan route:cache",
-        "php artisan view:cache"
-      ]
+  "version": 2,
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/public/index.php"
     }
+  ],
+  "builds": [
+    {
+      "src": "public/index.php",
+      "use": "@vercel/php"
+    }
+  ],
+  "installCommand": "composer install --ignore-platform-reqs",
+  "postInstall": "php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan storage:link",
+  "env": {
+    "APP_STORAGE": "/tmp",
+    "SESSION_DRIVER": "file",
+    "CACHE_DRIVER": "file",
+    "VIEW_COMPILED_PATH": "/tmp/views",
+    "LOG_CHANNEL": "stderr"
   }
-  
+}
