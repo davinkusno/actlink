@@ -22,39 +22,45 @@ $app = Application::configure(basePath: dirname(__DIR__))
     })
     ->create();
 
-// Ensure necessary directories exist and are writable in Vercel's temporary storage
-$cachePath = '/tmp/cache';
-$storagePath = '/tmp/storage';
-$viewsPath = '/tmp/views';
-$sessionsPath = '/tmp/sessions';
+// Dynamically override the cache and storage paths for serverless environment
+$app->bind('path.cache', function () {
+    return '/tmp/cache'; // Cache path in the temporary directory
+});
 
-// Create the directories if they don't exist
-foreach ([$cachePath, $storagePath, $viewsPath, $sessionsPath] as $path) {
-    if (!is_dir($path)) {
-        mkdir($path, 0777, true);
-    }
+$app->bind('path.storage', function () {
+    return '/tmp/storage'; // Storage path in the temporary directory
+});
+
+$app->bind('path.sessions', function () {
+    return '/tmp/sessions'; // Sessions path in the temporary directory
+});
+
+// Ensure the directories are created
+if (!is_dir('/tmp/cache')) {
+    mkdir('/tmp/cache', 0777, true);
 }
 
-// Override paths for serverless environments (like Vercel)
-$app->bind('path.cache', function () use ($cachePath) {
-    return $cachePath; // Cache path in the temporary directory
-});
+if (!is_dir('/tmp/storage')) {
+    mkdir('/tmp/storage', 0777, true);
+}
 
-$app->bind('path.storage', function () use ($storagePath) {
-    return $storagePath; // Storage path in the temporary directory
-});
+if (!is_dir('/tmp/sessions')) {
+    mkdir('/tmp/sessions', 0777, true);
+}
 
-$app->bind('path.sessions', function () use ($sessionsPath) {
-    return $sessionsPath; // Sessions path in the temporary directory
-});
+// Bind the correct paths for caching and storage to be used within the application
+$app->useStoragePath('/tmp/storage');
+$app->useCachedConfigPath('/tmp/config.php');
+$app->useCachedRoutesPath('/tmp/routes.php');
+$app->useCachedServicesPath('/tmp/services.php');
+$app->useCachedPackagesPath('/tmp/packages.php');
 
-// Explicitly set cache store path in config (for file caching)
-config(['cache.stores.file.path' => $cachePath]);
+// Configure cache paths explicitly for serverless environment
+config(['cache.stores.file.path' => '/tmp/cache']);
 
-// Explicitly set the views path (use /tmp for views if necessary)
-$app->bind('path.views', function () use ($viewsPath) {
-    return $viewsPath; // Views path in the temporary directory
-});
+// Ensure that the necessary directories are writable and exist
+if (!is_dir('/tmp/cache')) {
+    mkdir('/tmp/cache', 0777, true);
+}
 
-// Return the application instance
 return $app;
